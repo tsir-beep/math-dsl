@@ -12,4 +12,4 @@ main :: IO ()
 main = do
   userInput <- getLine
   let (cmd, exprString) = parseInput userInput
-  putStrLn (show $ lexer exprString)
+  putStrLn (show $ genExpr exprString)

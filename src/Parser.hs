@@ -50,28 +50,74 @@ lexer s@(c:cs)
   | c == '^' = TPow : lexer cs
   | c == '(' = TLParen : lexer cs
   | c == ')' = TRParen : lexer cs
-  | otherwise = [TEOF]
+  | otherwise = error "lexer: unaccepted character"
     where 
-      inner varName afterVar
-        | isAlpha $ head afterVar = [TVar varName, TProd] ++ lexer afterVar
-        | otherwise = TVar varName : lexer afterVar
+      inner varName afterVar = case afterVar of
+        (x:_) | isAlpha x -> [TVar varName, TProd] ++ lexer afterVar
+        _                  -> TVar varName : lexer afterVar
         
 -- Token stream monad to keep track of remaining tokens as we build Expr
-type TokenStream a = State [Token] a
+type Parser a = State [Token] a
 
 -- Scan next token without consuming
-peek :: TokenStream Token
+peek :: Parser Token
 peek = gets head
 
 -- Return and eat next token
-advance :: TokenStream Token
+advance :: Parser Token
 advance = do
   tokens <- get
   case tokens of
-    [] -> return TEOF -- Not sure how to handle this yet
+    [] -> error "advance: empty token stream" -- Not sure how to handle this yet
     (t:ts) -> do
       put ts
       return t
+
+-- Null denotation (denote on constants and parantheses)
+-- I.e., start of an Expr
+nud :: Token -> Parser Expr
+nud (TNum n) = return $ Const n
+nud (TVar c) = return $ Var c
+nud tok = error ("nud: invalid token: " ++ show tok) 
+
+-- Left denotation (denote on the left expression formed)
+led :: Expr -> Token -> Parser Expr
+led leftExpr tok = case tok of
+  TPlus -> do
+    rightExpr <- parseExpr (bindPower tok)
+    return $ Add leftExpr rightExpr
+  TProd -> do
+    rightExpr <- parseExpr (bindPower tok)
+    return $ Mul leftExpr rightExpr
+  TSlash -> do
+    rightExpr <- parseExpr (bindPower tok)
+    return $ Frac leftExpr rightExpr
+  TPow -> do
+    rightExpr <- parseExpr (bindPower tok)
+    case rightExpr of
+      Const n -> return $ Pow leftExpr n
+      _       -> error "exponent must be numerical"
+  otherTok -> error ("led: invalid token: " ++ show otherTok)
+
+-- Parse the expression through the token stream
+parseExpr :: Int -> Parser Expr
+parseExpr minBP = do
+  tok <- advance
+  leftExpr <- nud tok
+  loop leftExpr
+    where
+      loop leftExpr = do
+        tok <- peek
+        if bindPower tok <= minBP
+          then return leftExpr
+        else do
+          _ <- advance
+          leftExpr' <- led leftExpr tok
+          loop leftExpr'
+
+-- Generate Expr from tokenized string
+genExpr :: String -> Expr
+genExpr s = evalState (parseExpr 0) $ lexer s
 
 -- -- Generate Expr from String
 -- genExpr :: String -> Expr
