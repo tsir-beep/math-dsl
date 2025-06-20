@@ -1,7 +1,7 @@
 cabal-version:       2.2
 
 name:                math-dsl
-version:             0.2.0
+version:             0.3.0
 -- synopsis:
 -- description:
 homepage:            https://github.com/githubuser/math-dsl#readme
@@ -21,7 +21,9 @@ executable math-dsl
   default-language:    Haskell2010
   build-depends:       
     base >= 4.7 && < 5,
-    split
+    split,
+    mtl,
+  other-modules: Parser
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities
