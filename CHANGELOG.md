@@ -19,6 +19,11 @@
 ###
 - Refactored AST to only take two operands rather a list of expressions
 - Refactoring parse method to Pratt-parsing
-  - Implemented lexer to tokenize strings
-  - Implemented State monad TokenStream to keep track of tokens while building expressions
-  
+  - Lexer to tokenize strings
+  - State monad TokenStream to keep track of tokens while building expressions
+  - NUD and LED methods to parse expressions
+
+## 0.3.1 - 2025-06-21
+
+###
+- Fixed bug where Mul between constant and a variable isn't recognised by the lexer 

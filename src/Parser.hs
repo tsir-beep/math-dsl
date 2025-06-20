@@ -41,9 +41,10 @@ lexer [] = [TEOF]
 lexer s@(c:cs)
   | isSpace c = lexer cs
   | isDigit c = let (constant, rest) = span isDigit s
-                in TNum (read constant) : lexer rest
+                -- in TNum (read constant) : lexer rest
+                in inner1 constant rest
   | isAlpha c = let (varName, afterVar) = (c, tail s)
-                in inner varName afterVar 
+                in inner2 varName afterVar 
   | c == '+' = TPlus : lexer cs
   | c == '*' = TProd : lexer cs
   | c == '/' = TSlash : lexer cs
@@ -52,9 +53,12 @@ lexer s@(c:cs)
   | c == ')' = TRParen : lexer cs
   | otherwise = error "lexer: unaccepted character"
     where 
-      inner varName afterVar = case afterVar of
+      inner1 constant rest = case rest of
+        (x:_) | isAlpha x -> [TNum (read constant), TProd] ++ lexer rest
+        _                 -> TNum (read constant) : lexer rest
+      inner2 varName afterVar = case afterVar of
         (x:_) | isAlpha x -> [TVar varName, TProd] ++ lexer afterVar
-        _                  -> TVar varName : lexer afterVar
+        _                 -> TVar varName : lexer afterVar
         
 -- Token stream monad to keep track of remaining tokens as we build Expr
 type Parser a = State [Token] a
