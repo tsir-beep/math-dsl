@@ -1,6 +1,7 @@
 module Main (main) where
 
 import Parser
+import Printer
 
 -- Parse given user input into command and expression
 parseInput :: String -> (String, String)
@@ -12,5 +13,6 @@ main :: IO ()
 main = do
   userInput <- getLine
   let (cmd, exprString) = parseInput userInput
-  putStrLn (show $ lexer exprString)
-  putStrLn (show $ genExpr exprString)
+  let expr = genExpr exprString
+  putStrLn (show $ expr)
+  putStrLn (exprToString expr)

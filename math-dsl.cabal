@@ -23,7 +23,9 @@ executable math-dsl
     base >= 4.7 && < 5,
     split,
     mtl,
-  other-modules: Parser
+  other-modules: 
+    Parser,
+    Printer
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities

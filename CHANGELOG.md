@@ -32,3 +32,4 @@
 
 ###
 - Lexer can handle parantheses (including implicit multiplication over paran-delimited expressions)
+- Make pretty printer to convert Expr back to a String
