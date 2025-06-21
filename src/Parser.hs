@@ -42,23 +42,27 @@ lexer s@(c:cs)
   | isSpace c = lexer cs
   | isDigit c = let (constant, rest) = span isDigit s
                 -- in TNum (read constant) : lexer rest
-                in inner1 constant rest
+                in innerNum constant rest
   | isAlpha c = let (varName, afterVar) = (c, tail s)
-                in inner2 varName afterVar 
+                in innerVar varName afterVar 
   | c == '+' = TPlus : lexer cs
   | c == '*' = TProd : lexer cs
   | c == '/' = TSlash : lexer cs
   | c == '^' = TPow : lexer cs
   | c == '(' = TLParen : lexer cs
-  | c == ')' = TRParen : lexer cs
+  | c == ')' = let (_, afterParen) = (c, tail s)
+               in innerRParen afterParen
   | otherwise = error "lexer: unaccepted character"
     where 
-      inner1 constant rest = case rest of
-        (x:_) | isAlpha x -> [TNum (read constant), TProd] ++ lexer rest
+      innerNum constant rest = case rest of
+        (x:_) | isAlpha x || x == '(' -> [TNum (read constant), TProd] ++ lexer rest
         _                 -> TNum (read constant) : lexer rest
-      inner2 varName afterVar = case afterVar of
-        (x:_) | isAlpha x -> [TVar varName, TProd] ++ lexer afterVar
+      innerVar varName afterVar = case afterVar of
+        (x:_) | isAlpha x || x == '(' -> [TVar varName, TProd] ++ lexer afterVar
         _                 -> TVar varName : lexer afterVar
+      innerRParen afterParen = case afterParen of
+        (x:_) | x == '(' -> [TRParen, TProd] ++ lexer afterParen
+        _                 -> TRParen : lexer afterParen
         
 -- Token stream monad to keep track of remaining tokens as we build Expr
 type Parser a = State [Token] a
@@ -82,6 +86,12 @@ advance = do
 nud :: Token -> Parser Expr
 nud (TNum n) = return $ Const n
 nud (TVar c) = return $ Var c
+nud TLParen = do
+  innerExpr <- parseExpr 0
+  tok <- advance
+  case tok of
+    TRParen -> return innerExpr
+    _       -> error ("nud: expected closing paranthesis, got: " ++ show tok)
 nud tok = error ("nud: invalid token: " ++ show tok) 
 
 -- Left denotation (denote on the left expression formed)

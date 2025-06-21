@@ -26,4 +26,9 @@
 ## 0.3.1 - 2025-06-21
 
 ###
-- Fixed bug where Mul between constant and a variable isn't recognised by the lexer 
+- Fixed bug where implicit Mul wasn't recognised by the lexer
+
+## 0.4.0 - 2025-06-21
+
+###
+- Lexer can handle parantheses (including implicit multiplication over paran-delimited expressions)
