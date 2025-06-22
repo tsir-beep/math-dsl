@@ -1,7 +1,7 @@
 cabal-version:       2.2
 
 name:                math-dsl
-version:             0.4.0
+version:             0.5.0
 -- synopsis:
 -- description:
 homepage:            https://github.com/githubuser/math-dsl#readme
@@ -23,9 +23,11 @@ executable math-dsl
     base >= 4.7 && < 5,
     split,
     mtl,
+    containers,
   other-modules: 
     Parser,
-    Printer
+    Printer,
+    Simplify
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities

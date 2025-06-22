@@ -2,12 +2,13 @@ module Main (main) where
 
 import Parser
 import Printer
+import Simplify
 
 -- Parse given user input into command and expression
 parseInput :: String -> (String, String)
 parseInput userInput = case (words userInput) of
   (cmd:exprWords) -> (cmd, concat exprWords)
-  _               -> ("", "")
+  _               -> error "Incorrect input to DSL"
 
 main :: IO ()
 main = do
@@ -16,3 +17,4 @@ main = do
   let expr = genExpr exprString
   putStrLn (show $ expr)
   putStrLn (exprToString expr)
+  putStrLn (show $ countVars expr)

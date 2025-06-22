@@ -1,6 +1,5 @@
 module Parser where
 
-import Data.List.Split
 import Data.Char
 import Control.Monad.State
 
@@ -132,40 +131,3 @@ parseExpr minBP = do
 -- Generate Expr from tokenized string
 genExpr :: String -> Expr
 genExpr s = evalState (parseExpr 0) $ lexer s
-
--- -- Generate Expr from String
--- genExpr :: String -> Expr
--- genExpr exprString
---   |'/' `elem` exprString =   -- Check for '/' to generate Frac
---     let 
---       [numerator, denominator] = splitOn "/" exprString
-
---       -- Recursively generate numerator and denominator
---       numExpr = genExpr numerator
---       denExpr = genExpr denominator
---     in Frac numExpr denExpr
-    
---   | '+' `elem` exprString = -- Check for '+' to generate Add
---     let operands = splitOn "+" exprString
---     in Add (map genExpr operands) -- Recurse on all addition operands  
-
---   | otherwise =
---     -- Generate product expression
---     parseProduct exprString
-
--- -- Parse a product expression into Expr
--- parseProduct :: String -> Expr
--- parseProduct exprString = Mul (go exprString)
---   where
---     go "" = []
---     go s@(c:_)
---       | isDigit c = -- Read constant
---         let (constant, rest) = span isDigit s
---         in Const (read constant) : go rest
---       | otherwise = -- Read variable
---         let (varName, afterVar) = (c, tail s)
---         in case afterVar of
---           ('^':restExpr) -> -- Read exponent
---             let (exponent, rest) = span isDigit restExpr
---             in Pow (Var varName) (read exponent) : go rest
---           _ -> Var varName : go afterVar

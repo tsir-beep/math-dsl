@@ -33,3 +33,8 @@
 ###
 - Lexer can handle parantheses (including implicit multiplication over paran-delimited expressions)
 - Make pretty printer to convert Expr back to a String
+
+## 0.5.0 - 2025-06-22
+
+###
+- Count occurrences in a product term so program can 'fold' it during simplification
