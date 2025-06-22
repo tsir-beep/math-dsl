@@ -38,3 +38,5 @@
 
 ###
 - Count occurrences in a product term so program can 'fold' it during simplification
+- Stitch occurrences together to form a folded product
+- Simplify the products in an Expr AST
