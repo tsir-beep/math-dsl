@@ -15,6 +15,11 @@ main = do
   userInput <- getLine
   let (cmd, exprString) = parseInput userInput
   let expr = genExpr exprString
-  putStrLn (show $ expr)
-  putStrLn (exprToString expr)
-  putStrLn (exprToString $ simplifyProducts expr)
+  
+  if cmd == "SIMPLIFY"
+    then do
+      putStrLn (show $ expr)
+      putStrLn (exprToString expr)
+      putStrLn (exprToString $ simplifyProducts expr)
+    else do
+      putStrLn ("Invalid command")
