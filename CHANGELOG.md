@@ -45,3 +45,9 @@
 
 ### 
 - Generalise product simplification to support repeated full expressions (e.g., (1+x))
+
+## 0.5.2 - 2025-06-22
+
+###
+- Product simplification over subexpressions (e.g., (1+xx)^3 -> (1+x^2)^3)
+  - For a more complex example, DSL now simplifies (1+xx)(1+x^2) -> (1+x^2)^2

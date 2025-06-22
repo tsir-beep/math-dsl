@@ -17,5 +17,4 @@ main = do
   let expr = genExpr exprString
   putStrLn (show $ expr)
   putStrLn (exprToString expr)
-  putStrLn (show $ countVars expr)
   putStrLn (exprToString $ simplifyProducts expr)
