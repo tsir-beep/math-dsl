@@ -11,7 +11,7 @@ data Expr =
   | Add Expr Expr
   | Mul Expr Expr
   | Frac Expr Expr
-      deriving Show
+      deriving (Show, Eq, Ord)
 
 -- Tokens
 data Token = 

@@ -40,3 +40,8 @@
 - Count occurrences in a product term so program can 'fold' it during simplification
 - Stitch occurrences together to form a folded product
 - Simplify the products in an Expr AST
+
+## 0.5.1 - 2025-06-22
+
+### 
+- Generalise product simplification to support repeated full expressions (e.g., (1+x))
