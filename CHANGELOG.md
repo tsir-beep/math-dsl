@@ -51,3 +51,4 @@
 ###
 - Product simplification over subexpressions (e.g., (1+xx)^3 -> (1+x^2)^3)
   - For a more complex example, DSL now simplifies (1+xx)(1+x^2) -> (1+x^2)^2
+- Pretty printer now pretty
