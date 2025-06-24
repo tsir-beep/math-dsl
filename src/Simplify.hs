@@ -93,8 +93,8 @@ simplifyFraction (Frac nexpr dexpr) =
     nEOList = Map.toList nEO
     dEOList = Map.toList dEO
 
-    nEO' = map (\(x,n) -> (x, diffOcc (x,n) dEO)) nEOList
-    dEO' = map (\(x,n) -> (x, diffOcc (x,n) nEO)) dEOList
+    nEO' = filter (\(_,n) -> n > 0) $ map (\(x,n) -> (x, diffOcc (x,n) dEO)) nEOList
+    dEO' = filter (\(_,n) -> n > 0) $ map (\(x,n) -> (x, diffOcc (x,n) nEO)) dEOList
 
     divideBy = gcd nConst dConst
     nConst' = nConst `div` divideBy
