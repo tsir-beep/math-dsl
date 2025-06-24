@@ -42,7 +42,7 @@ pStitchEO (c, eo)
 simplifyProducts :: Expr -> Expr
 simplifyProducts pTerm@(Mul _ _) = pStitchEO $ pCountExpr pTerm
 simplifyProducts (Add lexpr rexpr) 
-  = Add (simplifyProducts lexpr) (simplifyProducts rexpr)
+  = simplifyOverAddition $ Add (simplifyProducts lexpr) (simplifyProducts rexpr)
 simplifyProducts (Frac lexpr rexpr) 
   = Frac (simplifyProducts lexpr) (simplifyProducts rexpr)
 simplifyProducts (Pow expr n) = Pow (simplifyProducts expr) n
