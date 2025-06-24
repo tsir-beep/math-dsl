@@ -5,6 +5,9 @@
 ###
 - Fixed bug which converts Mul to Add during fraction simplification
 - Fixed bug which didn't simplify some simpler fractions
+- Simplify expressions over operations containing their respective identity element
+  - E.g., `x + 0` = `x`
+  - E.g., `1x` = `x`
 
 ## 0.6.1 - 2025-06-24
 

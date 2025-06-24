@@ -100,7 +100,7 @@ simplifyFraction (Frac nexpr dexpr) =
     nConst' = nConst `div` divideBy
     dConst' = dConst `div` divideBy 
   in
-    Frac (Mul (Const nConst') (stitch nEO')) (Mul (Const dConst') (stitch dEO'))
+    idMap $ Frac (idMap $ Mul (Const nConst') (stitch nEO')) (idMap $ Mul (Const dConst') (stitch dEO'))
   where
     stitch [] = Const 1
     stitch [(x,n)]
@@ -134,3 +134,11 @@ simplifyOverAddition = addLikeTerms . aCountExpr
 -- Simplify arithmetic expression
 simplify :: Expr -> Expr
 simplify = simplifyOverAddition . simplifyProducts
+
+-- iD maps for different arithmetic operations
+idMap :: Expr -> Expr
+idMap (Add lexpr (Const 0)) = lexpr
+idMap (Mul (Const 1) rexpr) = rexpr
+idMap (Mul lexpr (Const 1)) = lexpr
+idMap (Frac nexpr (Const 1)) = nexpr
+idMap e = e
