@@ -1,5 +1,11 @@
 # Changelog for `math-dsl`
 
+## 0.6.2 - 2025-06-24
+
+###
+- Fixed bug which converts Mul to Add during fraction simplification
+- Fixed bug which didn't simplify some simpler fractions
+
 ## 0.6.1 - 2025-06-24
 
 ###

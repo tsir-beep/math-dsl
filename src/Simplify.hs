@@ -115,11 +115,16 @@ simplifyFraction e = e
 
 -- Simplify fractions over AST
 simplifyFractions :: Expr -> Expr
-simplifyFractions (Add lexpr rexpr) = Add (simplifyFractions lexpr) (simplifyFractions rexpr)
-simplifyFractions (Mul lexpr rexpr) = Add (simplifyFractions lexpr) (simplifyFractions rexpr)
+simplifyFractions (Add lexpr rexpr) 
+  = Add (simplifyFractions lexpr) (simplifyFractions rexpr)
+simplifyFractions (Mul lexpr rexpr) 
+  = Mul (simplifyFractions lexpr) (simplifyFractions rexpr)
 simplifyFractions (Pow expr n) = Pow (simplifyFractions expr) n
 simplifyFractions e@(Frac (Mul _ _) (Mul _ _)) = simplifyFraction e
-simplifyFractions (Frac nexpr dexpr) = Frac (simplifyFractions nexpr) (simplifyFractions dexpr) 
+simplifyFractions e@(Frac (Mul _ _) (Var _)) = simplifyFraction e
+simplifyFractions e@(Frac (Var _) (Mul _ _)) = simplifyFraction e
+simplifyFractions (Frac nexpr dexpr) 
+  = Frac (simplifyFractions nexpr) (simplifyFractions dexpr) 
 simplifyFractions e = e
 
 -- Simplify over addition
