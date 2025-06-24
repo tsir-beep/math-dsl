@@ -30,10 +30,10 @@ exprToString = go 0
       paranthesise (p > 1) $ (go (pTable e) lexpr) ++ " + " ++ (go (pTable e) rexpr)
     go p e@(Mul lexpr rexpr) =
       paranthesise (p > 2) $ (go (pTable e) lexpr) ++ (go (pTable e) rexpr)
-    go p e@(Frac lexpr rexpr) =
-       paranthesise (p > 1) $ (go (pTable e) lexpr) ++ " / " ++ (go (pTable e) rexpr)
+    go _ e@(Frac lexpr rexpr) =
+       paranthesise True $ (go (pTable e) lexpr) ++ " / " ++ (go (pTable e) rexpr)
     go p e@(Pow lexpr n) =
-       paranthesise (p > 1) $ (go (pTable e) lexpr) ++ "^" ++ show n
+       paranthesise (p > 3) $ (go (pTable e) lexpr) ++ "^" ++ show n
     
     paranthesise True s = "(" ++ s ++ ")"
     paranthesise False s = s

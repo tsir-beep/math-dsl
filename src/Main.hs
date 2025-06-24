@@ -20,6 +20,7 @@ main = do
     then do
       putStrLn (show $ expr)
       putStrLn (exprToString expr)
-      putStrLn (exprToString $ simplifyProducts expr)
+      putStrLn (show $ simplifyProducts expr)
+      putStrLn (exprToString $ simplify expr)
     else do
       putStrLn ("Invalid command")

@@ -52,3 +52,10 @@
 - Product simplification over subexpressions (e.g., (1+xx)^3 -> (1+x^2)^3)
   - For a more complex example, DSL now simplifies (1+xx)(1+x^2) -> (1+x^2)^2
 - Pretty printer now pretty
+
+## 0.6.0 - 2025-06-24
+
+###
+- Product simplification now supports implicit multiplication over fractions given numerator and denominators are paranthesised
+  - E.g., xxy((xy)/y) -> (x^3y^2/y)\
+- Simplify AST over addition
