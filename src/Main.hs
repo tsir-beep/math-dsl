@@ -22,5 +22,6 @@ main = do
       putStrLn (exprToString expr)
       putStrLn (show $ simplifyProducts expr)
       putStrLn (exprToString $ simplify expr)
+      putStrLn (exprToString $ simplifyFractions $ simplify expr)
     else do
       putStrLn ("Invalid command")

@@ -43,8 +43,8 @@ simplifyProducts :: Expr -> Expr
 simplifyProducts pTerm@(Mul _ _) = pStitchEO $ pCountExpr pTerm
 simplifyProducts (Add lexpr rexpr) 
   = simplifyOverAddition $ Add (simplifyProducts lexpr) (simplifyProducts rexpr)
-simplifyProducts (Frac lexpr rexpr) 
-  = Frac (simplifyProducts lexpr) (simplifyProducts rexpr)
+simplifyProducts (Frac nexpr dexpr) 
+  = Frac (simplifyProducts nexpr) (simplifyProducts dexpr)
 simplifyProducts (Pow expr n) = Pow (simplifyProducts expr) n
 simplifyProducts var@(Var _) = var
 simplifyProducts c@(Const _) = c
@@ -77,6 +77,50 @@ addLikeTerms (c, eo)
     go ((x,n):xs)
       | n == 1 = Add x (go xs)
       | otherwise = Add (Mul (Const n) x) (go xs)
+
+-- Differ the occurrences
+diffOcc :: (Expr, Int) -> Map.Map Expr Int -> Int
+diffOcc (x,n) rEO = case (Map.lookup x rEO) of
+  (Just n') -> n - n'
+  Nothing   -> n
+
+-- Simplify a single fraction
+simplifyFraction :: Expr -> Expr
+simplifyFraction (Frac nexpr dexpr) =
+  let 
+    (nConst, nEO) = pCountExpr nexpr
+    (dConst, dEO) = pCountExpr dexpr
+    nEOList = Map.toList nEO
+    dEOList = Map.toList dEO
+
+    nEO' = map (\(x,n) -> (x, diffOcc (x,n) dEO)) nEOList
+    dEO' = map (\(x,n) -> (x, diffOcc (x,n) nEO)) dEOList
+
+    divideBy = gcd nConst dConst
+    nConst' = nConst `div` divideBy
+    dConst' = dConst `div` divideBy 
+  in
+    Frac (Mul (Const nConst') (stitch nEO')) (Mul (Const dConst') (stitch dEO'))
+  where
+    stitch [] = Const 1
+    stitch [(x,n)]
+      | n <= 0 = Const 1
+      | n == 1 = x
+      | otherwise = Pow x n
+    stitch ((x,n):xs)
+      | n <= 0 = stitch xs
+      | n == 1 = Mul x (stitch xs)
+      | otherwise = Mul (Pow x n) (stitch xs)
+simplifyFraction e = e
+
+-- Simplify fractions over AST
+simplifyFractions :: Expr -> Expr
+simplifyFractions (Add lexpr rexpr) = Add (simplifyFractions lexpr) (simplifyFractions rexpr)
+simplifyFractions (Mul lexpr rexpr) = Add (simplifyFractions lexpr) (simplifyFractions rexpr)
+simplifyFractions (Pow expr n) = Pow (simplifyFractions expr) n
+simplifyFractions e@(Frac (Mul _ _) (Mul _ _)) = simplifyFraction e
+simplifyFractions (Frac nexpr dexpr) = Frac (simplifyFractions nexpr) (simplifyFractions dexpr) 
+simplifyFractions e = e
 
 -- Simplify over addition
 simplifyOverAddition :: Expr -> Expr

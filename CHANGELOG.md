@@ -6,6 +6,8 @@
 - Simplifiy AST over addition within subexpressions
   - E.g., `(1+x+x+2)^2` -> `(2x + 3)^2`
 - Fixed CHANGELOG.md order
+- Simplify fractions
+  - Both expressions and pure numerical fractions
 
 ## 0.6.0 - 2025-06-24
 
