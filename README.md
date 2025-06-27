@@ -42,6 +42,6 @@ This will return the Greatest Common Factor (GCF) in an expression i.e., factor 
 - E.g., `xyz + x^2y` has GCF `xy` i.e., can be factorised as `xy(z + x)`
 - E.g., `(x+1)^2 + (x+1)(x+2) + ((x+1)/y)` has GCF `(x+1)` i.e., can be factorised as `(x+1)((x+1) + (x+2) + 1/y)`
 
-### EVAL(<varMap>)
-This will evaluate an expression with a given variable map. <varMap> is in the format of <var>=<number>,...
+### EVAL(`<varMap>`)
+This will evaluate an expression with a given variable map. `<varMap>` is in the format of `<var>=<number>,...`
 - E.g., `EVAL(x=2, y=3, z=4)` (whitespace is not necessary)
