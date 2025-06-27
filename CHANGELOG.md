@@ -1,5 +1,10 @@
 # Changelog for `math-dsl`
 
+## 0.8.0 - 2025-06-27
+
+###
+- Evaluate expressions with given variable map
+
 ## 0.7.0 - 2025-06-27
 
 ###
