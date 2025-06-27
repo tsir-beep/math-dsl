@@ -9,6 +9,9 @@ an Abstract Syntax Tree (AST) via Pratt Parsing (to consider operation precedenc
 products, adding like-terms, simplifying fractions) find the greatest common factor in the whole expression and evaluate
 the expression by subbing in variables.
 
+To build the project, make sure you have GHC with Stack. Then simply run `stack build` to build the executable then run
+`stack exec math-dsl` to run the program.
+
 ## Input
 
 The input is in the format `<COMMAND> <EXPRESSION>`
