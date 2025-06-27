@@ -18,6 +18,9 @@ exprToString = go 0
     go _ (Const n) = show n
     go _ (Var c) = [c]
 
+    go p e@(Add lexpr m@(Mul (Const n) rexpr))
+      | n < 0 =  paranthesise (p > 0) $ (go (pTable e) lexpr) ++ " - " ++ (go (pTable e) (Mul (Const (-1*n)) rexpr))
+      | otherwise = paranthesise (p > 0) $ (go (pTable e) lexpr) ++ " + " ++ (go (pTable e) m)
     go p e@(Add lexpr rexpr) = 
       paranthesise (p > 0) $ (go (pTable e) lexpr) ++ " + " ++ (go (pTable e) rexpr)
     go p e@(Mul lexpr rexpr) =

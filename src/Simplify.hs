@@ -68,9 +68,11 @@ addLikeTerms (c, eo)
   where
     go [] = Const 0
     go [(x,n)]
+      | n == 0 = Const 0
       | n == 1 = x
       | otherwise = Mul (Const n) x
     go ((x,n):xs)
+      | n == 0 = Add (Const 0) (go xs)
       | n == 1 = Add x (go xs)
       | otherwise = Add (Mul (Const n) x) (go xs)
 
@@ -134,6 +136,7 @@ simplify = idMap . simplifyOverAddition . simplifyFractions . simplifyProducts
 -- iD maps for different arithmetic operations
 idMap :: Expr -> Expr
 idMap (Add lexpr (Const 0)) = lexpr
+idMap (Add (Const 0) rexpr) = rexpr
 idMap (Mul (Const 1) rexpr) = rexpr
 idMap (Mul lexpr (Const 1)) = lexpr
 idMap (Frac nexpr (Const 1)) = nexpr

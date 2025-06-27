@@ -75,6 +75,12 @@ main = hspec $ do
       simplifyThenPrint "20x + 50y + 80x + 40y" `shouldBe` "100x + 90y"
       simplifyThenPrint "(x+1)^2 + 3(x+1)^2 + x + 1 + x + 1" `shouldBe` "2x + 4(x + 1)^2 + 2" 
 
+    it "Adds negative like-terms" $ do
+      simplifyThenPrint "-3x - 2x" `shouldBe` "-5x"
+      simplifyThenPrint "-(x+1) - 2(x+1)" `shouldBe` "-3(x + 1)"
+      simplifyThenPrint "x - 5(x+1) - (x+1)" `shouldBe` "x - 6(x + 1)"
+      simplifyThenPrint "y + x - x" `shouldBe` "y"
+
     it "Simplifies fractions" $ do
       simplifyThenPrint "(5x^2y)/(10xy^5)" `shouldBe` "x/2y^4"
       simplifyThenPrint "(x+1)^2 + 3(x+1)^2 + (2x^4z)/(10x) + x + 1 + x + 1 + (3x^5y)/(3xy)" `shouldBe` "2x + x^4 + 4(x + 1)^2 + x^3z/5 + 2" 

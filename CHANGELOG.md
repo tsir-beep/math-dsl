@@ -1,5 +1,8 @@
 # Changelog for `math-dsl`
 
+## 0.9.0 - 2025-06-27
+- Negative number support
+
 ## 0.8.2 - 2025-06-27
 - Updated pretty printer and how it prints fractions
 - Function simplify composes simplifyFractions

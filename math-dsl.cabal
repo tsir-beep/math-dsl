@@ -42,7 +42,8 @@ executable math-dsl
     Printer,
     Simplify,
     Factor,
-    Eval
+    Eval,
+    Differentiate
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities

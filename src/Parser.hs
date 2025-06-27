@@ -19,6 +19,7 @@ data Token =
   | TVar Char
   | TPow
   | TPlus
+  | TMinus
   | TProd
   | TSlash
   | TLParen
@@ -30,6 +31,7 @@ data Token =
 bindPower :: Token -> Int
 bindPower TPow = 40
 bindPower TPlus = 10
+bindPower TMinus = 10
 bindPower TProd = 20
 bindPower TSlash = 30
 bindPower _ = 0
@@ -45,6 +47,7 @@ lexer s@(c:cs)
   | isAlpha c = let (varName, afterVar) = (c, tail s)
                 in innerVar varName afterVar 
   | c == '+' = TPlus : lexer cs
+  | c == '-' = TMinus : lexer cs
   | c == '*' = TProd : lexer cs
   | c == '/' = TSlash : lexer cs
   | c == '^' = TPow : lexer cs
@@ -85,6 +88,9 @@ advance = do
 nud :: Token -> Parser Expr
 nud (TNum n) = return $ Const n
 nud (TVar c) = return $ Var c
+nud TMinus = do
+  expr <- parseExpr (bindPower TMinus + 40) -- Need higher binding power for nud
+  return (Mul (Const (-1)) expr)
 nud TLParen = do
   innerExpr <- parseExpr 0
   tok <- advance
@@ -99,6 +105,9 @@ led leftExpr tok = case tok of
   TPlus -> do
     rightExpr <- parseExpr (bindPower tok)
     return $ Add leftExpr rightExpr
+  TMinus -> do
+    rightExpr <- parseExpr (bindPower tok)
+    return $ Add leftExpr (Mul (Const (-1)) (rightExpr))
   TProd -> do
     rightExpr <- parseExpr (bindPower tok)
     return $ Mul leftExpr rightExpr
