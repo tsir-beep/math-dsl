@@ -1,5 +1,10 @@
 # Changelog for `math-dsl`
 
+## 0.8.1 - 2025-06-27
+
+###
+- Evaluate expressions to 2 d.p
+
 ## 0.8.0 - 2025-06-27
 
 ###

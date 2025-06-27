@@ -12,9 +12,10 @@ parseEval varMap = Map.fromList $ go $ splitOn "," $ filter (not . isSpace) varM
     go ls = [(x, read n) | (x:'=':n) <- ls]
 
 -- Evaluate an expression by subbing variables
-evalExpr :: Expr -> Map.Map Char Int -> Float
-evalExpr expr varMap = go expr
+evalExpr :: Expr -> Map.Map Char Int -> Double
+evalExpr expr varMap = fromIntegral (round ((go expr) * 100) :: Integer)/ 100.0
   where
+    go :: Expr -> Double
     go (Mul lexpr rexpr) = (go lexpr) * (go rexpr)
     go (Add lexpr rexpr) = (go lexpr) + (go rexpr)
     go (Frac nexpr dexpr) = (go nexpr) / (go dexpr)
