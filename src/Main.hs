@@ -5,6 +5,7 @@ import Printer
 import Simplify
 import Factor
 import Eval
+import Differentiate
 
 -- Parse given user input into command and expression
 parseInput :: String -> (String, String)
@@ -31,6 +32,11 @@ main = do
       let varMap = init $ drop 5 cmd
       putStrLn (show $ evalExpr expr $ parseEval varMap)
 
+  else if (take 4 cmd) == "DIFF"
+    then do
+      let wrt = head $ drop 5 cmd
+      putStrLn (exprToString $ simplify $ diffExpr (simplify expr) wrt)
+
   else if cmd == "DEBUG"
     then do
       putStrLn ("Inputted expression: ")
@@ -40,6 +46,8 @@ main = do
       putStrLn ("Outputted expression: ")
       putStrLn (show $ simplify expr)
       putStrLn (exprToString $ simplify expr)
+      putStrLn (show $ simplify $ diffExpr expr 'x')
+      putStrLn (exprToString $ simplify $ diffExpr expr 'x')
 
   else do
     putStrLn ("Invalid command")

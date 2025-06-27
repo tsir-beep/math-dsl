@@ -6,6 +6,7 @@ import Printer
 import Simplify
 import Factor
 import Eval
+import Differentiate
 
 simplifyThenPrint :: String -> String
 simplifyThenPrint = exprToString . simplify . genExpr
@@ -15,6 +16,9 @@ gcfThenPrint = exprToString . gcf . simplify . genExpr
 
 parseThenEval :: String -> String -> Double
 parseThenEval evalMap exprString = evalExpr (genExpr exprString) (parseEval evalMap) 
+
+differentiateThenPrint :: Char -> String -> String
+differentiateThenPrint var exprString = exprToString $ simplify $ diffExpr ((simplify . genExpr) exprString) var
 
 main :: IO ()
 main = hspec $ do
@@ -133,3 +137,12 @@ main = hspec $ do
       parseThenEval "x=2,y=0"  "xy" `shouldBe` 0.0
       parseThenEval "x=2, y=4" "x^4 + (x+y+2)^2" `shouldBe` 80.0
       parseThenEval "x=4, y=8" "x/y" `shouldBe` 0.50
+
+  describe "Differeniate" $ do
+    it "Differeniates simple terms" $ do
+      differentiateThenPrint 'x' "x" `shouldBe` "1"
+      differentiateThenPrint 'x' "1" `shouldBe` "0"
+    it "Differeniates simple products" $ do
+      differentiateThenPrint 'x' "xyz" `shouldBe`"yz"
+      differentiateThenPrint 'x' "xyz + x^2 + y" `shouldBe` "2x + yz"
+      differentiateThenPrint 'x' "(x^2 + x)^3" `shouldBe` "3(x + x^2)^2(2x + 1)"

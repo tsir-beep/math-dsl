@@ -1,5 +1,9 @@
 # Changelog for `math-dsl`
 
+## 0.10.0 - 2025-06-28
+- Proper identity operation mapping
+- Differentiate expressions (including partial differentiation)
+
 ## 0.9.0 - 2025-06-27
 - Negative number support
 

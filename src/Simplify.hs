@@ -45,7 +45,7 @@ simplifyProducts (Add lexpr rexpr)
   = simplifyOverAddition $ Add (simplifyProducts lexpr) (simplifyProducts rexpr)
 simplifyProducts (Frac nexpr dexpr) 
   = Frac (simplifyProducts nexpr) (simplifyProducts dexpr)
-simplifyProducts (Pow expr n) = idMap (Pow (simplifyProducts expr) n)
+simplifyProducts (Pow expr n) = idOperation (Pow (simplifyProducts expr) n)
 simplifyProducts var@(Var _) = var
 simplifyProducts c@(Const _) = c
 
@@ -98,7 +98,7 @@ simplifyFraction (Frac nexpr dexpr) =
     nConst' = nConst `div` divideBy
     dConst' = dConst `div` divideBy 
   in
-    idMap $ Frac (idMap $ Mul (Const nConst') (stitch nEO')) (idMap $ Mul (Const dConst') (stitch dEO'))
+    idOperation $ Frac (idOperation $ Mul (Const nConst') (stitch nEO')) (idOperation $ Mul (Const dConst') (stitch dEO'))
   where
     stitch [] = Const 1
     stitch [(x,n)]
@@ -133,12 +133,22 @@ simplifyOverAddition = addLikeTerms . aCountExpr
 simplify :: Expr -> Expr
 simplify = idMap . simplifyOverAddition . simplifyFractions . simplifyProducts
 
--- iD maps for different arithmetic operations
+-- identity operations for different arithmetic operations
+idOperation :: Expr -> Expr
+idOperation (Add lexpr (Const 0)) = lexpr
+idOperation (Add (Const 0) rexpr) = rexpr
+idOperation (Mul (Const 0) _) = Const 0
+idOperation (Mul _ (Const 0)) = Const 0
+idOperation (Mul (Const 1) rexpr) = rexpr
+idOperation (Mul lexpr (Const 1)) = lexpr
+idOperation (Frac nexpr (Const 1)) = nexpr
+idOperation (Pow expr 1) = expr
+idOperation e = e
+
+-- Maps idOperation to every term in an expression
 idMap :: Expr -> Expr
-idMap (Add lexpr (Const 0)) = lexpr
-idMap (Add (Const 0) rexpr) = rexpr
-idMap (Mul (Const 1) rexpr) = rexpr
-idMap (Mul lexpr (Const 1)) = lexpr
-idMap (Frac nexpr (Const 1)) = nexpr
-idMap (Pow expr 1) = expr
-idMap e = e
+idMap (Add lexpr rexpr) = idOperation (Add (idMap lexpr) (idMap rexpr))
+idMap (Mul lexpr rexpr) = idOperation (Mul (idMap lexpr) (idMap rexpr))
+idMap (Pow expr n) = idOperation (Pow (idMap expr) n)
+idMap (Frac nexpr dexpr) = idOperation (Frac (idMap nexpr) (idMap dexpr))
+idMap e = idOperation e

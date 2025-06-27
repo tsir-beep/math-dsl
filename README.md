@@ -1,13 +1,13 @@
 # math-dsl
 
-A Haskell-based symbolic math DSL for simplifying, factoring and evaluating algebraic expressions over simple arithmetic.
+A Haskell-based symbolic math DSL for simplifying, factoring, evaluating and differentiating algebraic expressions over simple arithmetic.
 
 ## How it works
 
 This program uses a CLI (refer to `Commands` subsection for detailed use) taking a raw string input and converting it into 
 an Abstract Syntax Tree (AST) via Pratt Parsing (to consider operation precedence). It can then simplify expressions (folding
-products, adding like-terms, simplifying fractions) find the greatest common factor in the whole expression and evaluate
-the expression by subbing in variables.
+products, adding like-terms, simplifying fractions) find the greatest common factor in the whole expression, evaluate
+the expression by subbing in variables and even differentiate.
 
 To build the project, make sure you have GHC with Stack. Then simply run `stack build` to build the executable then run
 `stack exec math-dsl` to run the program.
@@ -49,3 +49,7 @@ This will return the Greatest Common Factor (GCF) in an expression i.e., factor 
 ### EVAL(`<varMap>`)
 This will evaluate an expression with a given variable map. `<varMap>` is in the format of `<var>=<number>,...`
 - E.g., `EVAL(x=2, y=3, z=4)` (whitespace is not necessary)
+
+### DIFF(`<var>`)
+This will differeniate an expression with respect to `<var>` (yes this means it does partial differentiation as well)
+- E.g., `DIFF(x) x^2 + x`
