@@ -12,7 +12,7 @@ type MulVec = (Int, ExprOccurences)
 
 -- Merge tuples carrying constant
 mulMerge :: MulVec -> MulVec -> MulVec
-mulMerge (c1, vo1) (c2, vo2) = (c1 * c2, Map.unionWith (+) vo1 vo2)
+mulMerge (c1, eo1) (c2, eo2) = (c1 * c2, Map.unionWith (+) eo1 eo2)
 
 -- Count the occurrences that appear in a product term
 pCountExpr :: Expr -> MulVec

@@ -3,6 +3,7 @@ module Main (main) where
 import Parser
 import Printer
 import Simplify
+import Factor
 
 -- Parse given user input into command and expression
 parseInput :: String -> (String, String)
@@ -23,5 +24,9 @@ main = do
       putStrLn (show $ simplify expr)
       putStrLn (show $ simplifyFractions $ simplify expr)
       putStrLn (exprToString $ simplifyFractions $ simplify expr)
-    else do
-      putStrLn ("Invalid command")
+  else if cmd == "FACTOR"
+    then do
+      putStrLn (show $ simplifyFractions $ simplify expr)
+      putStrLn (exprToString $ gcf $ simplifyFractions $ simplify expr)
+  else do
+    putStrLn ("Invalid command")

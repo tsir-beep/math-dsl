@@ -1,5 +1,11 @@
 # Changelog for `math-dsl`
 
+## 0.7.0 - 2025-06-27
+
+###
+- Factor an expression
+  - E.g. `2x(x+1) + (4(x+1)/(y)) + 6(x+1)(x+2)` -> `2(x+1)`
+
 ## 0.6.2 - 2025-06-24
 
 ###
