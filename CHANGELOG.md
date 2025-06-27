@@ -8,6 +8,7 @@
 - Simplify expressions over operations containing their respective identity element
   - E.g., `x + 0` = `x`
   - E.g., `1x` = `x`
+- Fixed pretty printer bug where subexpressions under Mul don't paranthesise 
 
 ## 0.6.1 - 2025-06-24
 

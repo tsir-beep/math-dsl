@@ -27,7 +27,8 @@ executable math-dsl
   other-modules: 
     Parser,
     Printer,
-    Simplify
+    Simplify,
+    Factor
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities

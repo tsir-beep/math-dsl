@@ -6,21 +6,13 @@ import Parser
 pTable :: Expr -> Int
 pTable (Add _ _) = 0
 pTable (Frac _ _) = 0
-pTable (Mul _ _) = 1
-pTable (Pow _ _) = 2
-pTable (Const _) = 3
-pTable (Var _) = 3
+pTable (Mul _ _) = 2
+pTable (Pow _ _) = 3
+pTable (Const _) = 4
+pTable (Var _) = 4
 
 -- This is pretty much a CFG
 exprToString :: Expr -> String
--- exprToString expr = case expr of
---   Add lexpr rexpr -> "(" ++ (exprToString lexpr) ++ " + " ++ (exprToString rexpr) ++ ")"
---   Mul lexpr rexpr -> "(" ++ (exprToString lexpr) ++ (exprToString rexpr) ++ ")"
---   Frac lexpr rexpr -> "(" ++ (exprToString lexpr) ++ "/" ++ (exprToString rexpr) ++ ")"
---   Pow lexpr n -> "(" ++ (exprToString lexpr) ++ "^" ++ show n ++ ")"
---   Var c -> [c]
---   Const n -> show n
-
 exprToString = go 0
   where
     go _ (Const n) = show n
