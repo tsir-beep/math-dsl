@@ -129,7 +129,7 @@ simplifyOverAddition = addLikeTerms . aCountExpr
 
 -- Simplify arithmetic expression
 simplify :: Expr -> Expr
-simplify = idMap . simplifyOverAddition . simplifyProducts
+simplify = idMap . simplifyOverAddition . simplifyFractions . simplifyProducts
 
 -- iD maps for different arithmetic operations
 idMap :: Expr -> Expr

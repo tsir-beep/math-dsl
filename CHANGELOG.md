@@ -1,5 +1,10 @@
 # Changelog for `math-dsl`
 
+## 0.8.2 - 2025-06-27
+- Updated pretty printer and how it prints fractions
+- Function simplify composes simplifyFractions
+- Updated DEBUG print
+
 ## 0.8.1 - 2025-06-27
 
 ###

@@ -20,11 +20,11 @@ main = do
   
   if cmd == "SIMPLIFY"
     then do
-      putStrLn (exprToString $ simplifyFractions $ simplify expr)
+      putStrLn (exprToString $ simplify expr)
 
   else if cmd == "FACTOR"
     then do
-      putStrLn (exprToString $ gcf $ simplifyFractions $ simplify expr)
+      putStrLn (exprToString $ gcf $ simplify expr)
 
   else if (take 4 cmd) == "EVAL"
     then do
@@ -33,11 +33,13 @@ main = do
 
   else if cmd == "DEBUG"
     then do
+      putStrLn ("Inputted expression: ")
       putStrLn (show $ expr)
       putStrLn (exprToString expr)
+      putStrLn ""
+      putStrLn ("Outputted expression: ")
       putStrLn (show $ simplify expr)
-      putStrLn (show $ simplifyFractions $ simplify expr)
-      putStrLn (exprToString $ simplifyFractions $ simplify expr)
+      putStrLn (exprToString $ simplify expr)
 
   else do
     putStrLn ("Invalid command")

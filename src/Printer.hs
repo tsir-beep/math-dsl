@@ -5,7 +5,7 @@ import Parser
 -- Precedence table for paranthesising
 pTable :: Expr -> Int
 pTable (Add _ _) = 0
-pTable (Frac _ _) = 0
+pTable (Frac _ _) = 1
 pTable (Mul _ _) = 2
 pTable (Pow _ _) = 3
 pTable (Const _) = 4
@@ -19,11 +19,11 @@ exprToString = go 0
     go _ (Var c) = [c]
 
     go p e@(Add lexpr rexpr) = 
-      paranthesise (p > 1) $ (go (pTable e) lexpr) ++ " + " ++ (go (pTable e) rexpr)
+      paranthesise (p > 0) $ (go (pTable e) lexpr) ++ " + " ++ (go (pTable e) rexpr)
     go p e@(Mul lexpr rexpr) =
       paranthesise (p > 2) $ (go (pTable e) lexpr) ++ (go (pTable e) rexpr)
-    go _ e@(Frac lexpr rexpr) =
-       paranthesise True $ (go (pTable e) lexpr) ++ " / " ++ (go (pTable e) rexpr)
+    go p e@(Frac lexpr rexpr) =
+       paranthesise (p > 0) $ (go (pTable e) lexpr) ++ "/" ++ (go (pTable e) rexpr)
     go p e@(Pow lexpr n) =
        paranthesise (p > 3) $ (go (pTable e) lexpr) ++ "^" ++ show n
     

@@ -1,7 +1,7 @@
 cabal-version:       2.2
 
 name:                math-dsl
-version:             0.8.1
+version:             0.8.2
 -- synopsis: A symbolic math DSL simplifying, factoring and evaluating arithmetic expressions
 homepage:            https://github.com/githubuser/math-dsl#readme
 license:             BSD-3-Clause
