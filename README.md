@@ -36,6 +36,7 @@ This will simplify the entire expression by:
   - `Expr + 0` = `Expr`
   - `1Expr` = `Expr`
   - `Expr/1` = `Expr`
+  - `Expr^1` = `Expr`
 
 ### FACTOR
 This will return the Greatest Common Factor (GCF) in an expression i.e., factor the whole expression

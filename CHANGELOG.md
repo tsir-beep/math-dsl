@@ -4,6 +4,7 @@
 
 ###
 - Evaluate expressions to 2 d.p
+- Idmap for Pow
 
 ## 0.8.0 - 2025-06-27
 

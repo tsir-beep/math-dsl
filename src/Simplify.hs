@@ -45,7 +45,7 @@ simplifyProducts (Add lexpr rexpr)
   = simplifyOverAddition $ Add (simplifyProducts lexpr) (simplifyProducts rexpr)
 simplifyProducts (Frac nexpr dexpr) 
   = Frac (simplifyProducts nexpr) (simplifyProducts dexpr)
-simplifyProducts (Pow expr n) = Pow (simplifyProducts expr) n
+simplifyProducts (Pow expr n) = idMap (Pow (simplifyProducts expr) n)
 simplifyProducts var@(Var _) = var
 simplifyProducts c@(Const _) = c
 
@@ -129,7 +129,7 @@ simplifyOverAddition = addLikeTerms . aCountExpr
 
 -- Simplify arithmetic expression
 simplify :: Expr -> Expr
-simplify = simplifyOverAddition . simplifyProducts
+simplify = idMap . simplifyOverAddition . simplifyProducts
 
 -- iD maps for different arithmetic operations
 idMap :: Expr -> Expr
@@ -137,4 +137,5 @@ idMap (Add lexpr (Const 0)) = lexpr
 idMap (Mul (Const 1) rexpr) = rexpr
 idMap (Mul lexpr (Const 1)) = lexpr
 idMap (Frac nexpr (Const 1)) = nexpr
+idMap (Pow expr 1) = expr
 idMap e = e
