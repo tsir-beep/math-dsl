@@ -1,4 +1,4 @@
-module Factor where
+module Factor (gcf) where
 
 import Parser
 import Simplify

@@ -1,4 +1,4 @@
-module Simplify where
+module Simplify (simplify, simplifyFractions, MulVec, pCountExpr, pStitchEO) where
 
 import Parser
 import qualified Data.Map as Map
@@ -48,10 +48,6 @@ simplifyProducts (Frac nexpr dexpr)
 simplifyProducts (Pow expr n) = Pow (simplifyProducts expr) n
 simplifyProducts var@(Var _) = var
 simplifyProducts c@(Const _) = c
-
--- Constant vector encoding over addition
--- Holds the constant throughout occurence counting as the first argument
-type AddVec = (Int, ExprOccurences)
 
 -- Merge tuples carrying constant
 addMerge :: MulVec -> MulVec -> MulVec

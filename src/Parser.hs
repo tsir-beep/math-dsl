@@ -1,4 +1,4 @@
-module Parser where
+module Parser (Expr(..), genExpr) where
 
 import Data.Char
 import Control.Monad.State

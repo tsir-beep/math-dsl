@@ -1,4 +1,4 @@
-module Printer where
+module Printer (exprToString) where
 
 import Parser
 
