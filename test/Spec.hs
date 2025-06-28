@@ -93,28 +93,30 @@ main = hspec $ do
     it "Simplifies fractions containing subexpressions" $ do
       simplifyThenPrint "(2(x+1)^2)/(4(x+2)(x+1))" `shouldBe` "(x + 1)/2(x + 2)"
 
-    -- it "Simplifies implicit multiplication over fractions" $ do
-    --   genExpr "((2xy/x^3)(4xy/8yz))" `shouldBe` Mul
-    --                                               (Frac 
-    --                                                 (Mul
-    --                                                   (Mul
-    --                                                     (Const 2)
-    --                                                     (Var 'x'))
-    --                                                   (Var 'y'))
-    --                                                 (Pow (Var 'x') 3))
-    --                                               (Frac
-    --                                                 (Mul
-    --                                                   (Mul
-    --                                                     (Const 4)
-    --                                                     (Var 'x'))
-    --                                                   (Var 'y'))
-    --                                                 (Mul
-    --                                                   (Mul
-    --                                                     (Const 8)
-    --                                                     (Var 'y'))
-    --                                                   (Var 'z')))
-    --   (exprToString $ genExpr "((2xy/x^3)(4xy/8yz))") `shouldBe` "((2xy/x^3)(4xy/8yz))"
-    --   simplifyThenPrint "((2xy/x^3)(4xy/8yz))" `shouldBe` "(2y/x^2)(x/2z)"
+    it "Simplifies implicit multiplication over fractions" $ do
+      genExpr "((2xy/x^3)(4xy/8yz))" `shouldBe` Mul
+                                                  (Frac 
+                                                    (Mul
+                                                      (Mul
+                                                        (Const 2)
+                                                        (Var 'x'))
+                                                      (Var 'y'))
+                                                    (Pow (Var 'x') 3))
+                                                  (Frac
+                                                    (Mul
+                                                      (Mul
+                                                        (Const 4)
+                                                        (Var 'x'))
+                                                      (Var 'y'))
+                                                    (Mul
+                                                      (Mul
+                                                        (Const 8)
+                                                        (Var 'y'))
+                                                      (Var 'z')))
+      (exprToString $ genExpr "((2xy/x^3)(4xy/8yz))") `shouldBe` "(2xy/x^3)(4xy/8yz)"
+      simplifyThenPrint "((2xy/x^3)(4xy/8yz))" `shouldBe` "(2y/x^2)(x/2z)"
+      simplifyThenPrint "((2xy/x^3)(4xy/8yz)(2y^2/4yx))" `shouldBe` "(2y/x^2)(x/2z)(y/2x)"
+      simplifyThenPrint "((2xy/x)(4xy/8yz)(2y^2/4yx))" `shouldBe` "2y(x/2z)(y/2x)"
 
     it "Simplifies identity elements in expressions" $ do
       simplifyThenPrint "x + 0" `shouldBe` "x"

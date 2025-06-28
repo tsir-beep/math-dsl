@@ -46,6 +46,8 @@ main = do
       putStrLn ("Outputted expression: ")
       putStrLn (show $ simplify expr)
       putStrLn (exprToString $ simplify expr)
+      putStrLn ""
+      putStrLn ("Differentiated expression: ")
       putStrLn (show $ simplify $ diffExpr expr 'x')
       putStrLn (exprToString $ simplify $ diffExpr expr 'x')
 

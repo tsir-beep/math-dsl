@@ -1,4 +1,4 @@
-module Simplify (simplify, simplifyFractions, MulVec, pCountExpr, pStitchEO) where
+module Simplify (simplify, simplifyFractions, MulVec, pCountExpr, pStitchEO, simplifyProducts) where
 
 import Parser
 import qualified Data.Map as Map
@@ -40,6 +40,8 @@ pStitchEO (c, eo)
 
 -- Simplify product terms in a Expr by folding them
 simplifyProducts :: Expr -> Expr
+simplifyProducts (Mul l@(Frac _ _) rexpr) = Mul (simplifyFraction $ simplifyProducts l) (simplifyProducts rexpr)
+simplifyProducts (Mul lexpr r@(Frac _ _)) = Mul (simplifyProducts lexpr) (simplifyFraction $ simplifyProducts r) 
 simplifyProducts pTerm@(Mul _ _) = pStitchEO $ pCountExpr pTerm
 simplifyProducts (Add lexpr rexpr) 
   = simplifyOverAddition $ Add (simplifyProducts lexpr) (simplifyProducts rexpr)

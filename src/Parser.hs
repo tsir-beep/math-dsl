@@ -32,8 +32,8 @@ bindPower :: Token -> Int
 bindPower TPow = 40
 bindPower TPlus = 10
 bindPower TMinus = 10
-bindPower TProd = 20
-bindPower TSlash = 30
+bindPower TProd = 30
+bindPower TSlash = 20
 bindPower _ = 0
 
 -- Lexer (tokenize a string)

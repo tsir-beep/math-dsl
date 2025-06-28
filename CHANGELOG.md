@@ -1,5 +1,9 @@
 # Changelog for `math-dsl`
 
+## 0.10.1 - 2025-06-28
+- Implicit multiplication over fractions
+  - E.g., `((2xy/x^3)(4xy/8yz)(2y^2/4yx))`
+
 ## 0.10.0 - 2025-06-28
 - Proper identity operation mapping
 - Differentiate expressions (including partial differentiation)
