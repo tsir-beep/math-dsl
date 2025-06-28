@@ -1,5 +1,9 @@
 # Changelog for `math-dsl`
 
+## 0.10.2 - 2025-06-28
+- Fixed EVAL parsing bug
+- CLI intro text
+
 ## 0.10.1 - 2025-06-28
 - Implicit multiplication over fractions
   - E.g., `((2xy/x^3)(4xy/8yz)(2y^2/4yx))`

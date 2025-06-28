@@ -6,19 +6,31 @@ import Simplify
 import Factor
 import Eval
 import Differentiate
+import Data.List.Split
 
 -- Parse given user input into command and expression
-parseInput :: String -> (String, String)
-parseInput userInput = case (words userInput) of
-  (cmd:exprWords) -> (cmd, concat exprWords)
-  _               -> error "Incorrect input to DSL"
+parseInput :: String -> IO (String, String)
+parseInput userInput = do
+  if (take 4 userInput) == "EVAL"
+    then do
+      case (splitOn ") " userInput) of
+        [cmd, exprWords] -> return $ (cmd ++ ")", exprWords)
+        _                -> error "Incorrect input to DSL"
+    else do
+     case (words userInput) of
+      (cmd:exprWords) -> return $ (cmd, concat exprWords)
+      _               -> error "Incorrect input to DSL"
 
 main :: IO ()
 main = do
+  putStrLn "Math-DSL --- Type SIMPLIFY, FACTOR, EVAL, or DIFF followed by your expression. Ctrl+C to quit."
+  
   userInput <- getLine
-  let (cmd, exprString) = parseInput userInput
+  (cmd, exprString) <- parseInput userInput
   let expr = genExpr exprString
   
+  putStrLn "Result:"
+
   if cmd == "SIMPLIFY"
     then do
       putStrLn (exprToString $ simplify expr)
